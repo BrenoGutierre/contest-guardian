@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="shortcut icon" href="contest guardian.ico" type="image/x-icon">
+  <title>Contest Guardian — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --accent:#a3ffba;
+      --primary:#0b2b1f;
+      --muted:#9aa6a1;
+      --gold:#c7a34a;
+      --glass: rgba(255,255,255,0.04);
+    }
+    body {
+      background:
+        /* Camuflagem digital */
+        repeating-linear-gradient(45deg, rgba(0,15,5,0.15) 0, rgba(0,15,5,0.15) 2px, transparent 2px, transparent 4px),
+        repeating-linear-gradient(-45deg, rgba(10,30,10,0.12) 0, rgba(10,30,10,0.12) 2px, transparent 2px, transparent 4px),
+        /* Gradientes estratégicos */
+        radial-gradient(800px 500px at 80% 10%, rgba(5,40,20,0.35), transparent),
+        radial-gradient(600px 400px at 10% 90%, rgba(0,60,30,0.25), transparent),
+        /* Base escura militar */
+        #050805;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #e6efe8;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+    }
+  
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+  
+    .accent { color: var(--accent); }
+    .chip {
+      background: rgba(163,255,186,0.08);
+      color: var(--accent);
+      padding: .3rem .8rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .85rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+  
+    /* Efeito HUD (heads-up display) */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+      pointer-events: none;
+      z-index: 0;
+    }
+  
+    html { scroll-behavior: smooth; }
+  </style>
+  
+</head>
+<body class="antialiased">
+  <!-- NAV -->
+  <header class="py-6 px-6 md:px-12 flex items-center justify-between sticky top-0 bg-black/40 backdrop-blur z-40 border-b border-white/5">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center glass">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="text-white"><path d="M12 2L15 8l6 .5-4.5 3 1.5 6L12 15l-6 3 1.5-6L3 8.5 9 8l3-6z" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div class="uppercase text-xs tracking-widest text-gray-400">Contest Guardian</div>
+        <div class="text-sm text-gray-300 -mt-1">Painel do Aluno</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="welcomeUser" class="text-sm text-gray-300"></span>
+      <button id="logoutBtn" class="px-4 py-2 rounded-md glass text-sm">Sair</button>
+    </div>
+  </header>
+
+  <main class="px-6 md:px-12 py-10">
+    <!-- KPIs -->
+    <section class="grid md:grid-cols-4 gap-4">
+      <div class="glass rounded-xl p-5">
+        <div class="text-xs uppercase tracking-widest text-gray-400">Progresso geral</div>
+        <div id="kpiProgress" class="text-3xl font-extrabold mt-2">--%</div>
+        <div class="h-2 bg-white/10 rounded mt-3">
+          <div id="kpiProgressBar" class="h-2 bg-green-500 rounded" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="glass rounded-xl p-5">
+        <div class="text-xs uppercase tracking-widest text-gray-400">Tempo de estudo (7d)</div>
+        <div id="kpiTime" class="text-3xl font-extrabold mt-2">--h --m</div>
+        <div class="text-xs text-gray-400 mt-1">Meta: <span id="kpiTimeGoal">14h</span></div>
+      </div>
+      <div class="glass rounded-xl p-5">
+        <div class="text-xs uppercase tracking-widest text-gray-400">Taxa de acerto</div>
+        <div id="kpiAccuracy" class="text-3xl font-extrabold mt-2">--%</div>
+        <div id="kpiAccuracyDiff" class="text-xs text-gray-400 mt-1"></div>
+      </div>
+      <div class="glass rounded-xl p-5">
+        <div class="text-xs uppercase tracking-widest text-gray-400">Sequência de dias</div>
+        <div id="kpiStreak" class="text-3xl font-extrabold mt-2">--</div>
+        <div class="text-xs text-gray-400 mt-1">Mantenha a chama acesa 🔥</div>
+      </div>
+    </section>
+
+    <!-- Charts + Próximos simulados -->
+    <section class="mt-8 grid md:grid-cols-3 gap-6">
+      <!-- Desempenho por Matéria -->
+      <div class="glass rounded-2xl p-6">
+        <div class="font-semibold">Desempenho por Matéria</div>
+        <div id="chartSubjects" class="mt-4 grid grid-cols-5 gap-2 items-end h-48"></div>
+        <div class="mt-2 text-[10px] text-gray-400 grid grid-cols-5 text-center">
+          <span>Mat</span><span>Port</span><span>Legis</span><span>RLM</span><span>Info</span>
+        </div>
+      </div>
+      <!-- Tempo de Estudo (7d) -->
+      <div class="glass rounded-2xl p-6">
+        <div class="font-semibold">Tempo de Estudo (últimos 7 dias)</div>
+        <div id="chartWeek" class="mt-4 grid grid-cols-7 gap-2 items-end h-48"></div>
+        <div class="mt-2 text-[10px] text-gray-400 grid grid-cols-7 text-center">
+          <span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span>
+        </div>
+      </div>
+      <!-- Próximos Simulados -->
+      <div class="glass rounded-2xl p-6">
+        <div class="font-semibold">Próximos Simulados</div>
+        <ul id="upcomingList" class="mt-4 space-y-3 text-sm"></ul>
+      </div>
+    </section>
+
+    <!-- Histórico -->
+    <section class="mt-8 glass rounded-2xl p-6 overflow-x-auto">
+      <div class="flex items-center justify-between mb-4">
+        <div class="font-semibold">Histórico recente</div>
+        <button id="btnOpenNew" class="px-4 py-2 chip">Adicionar resultado</button>
+      </div>
+      <table class="w-full text-left text-sm">
+        <thead class="text-gray-400">
+          <tr>
+            <th class="py-2">Data</th>
+            <th>Simulado</th>
+            <th>Acertos</th>
+            <th>Tempo</th>
+            <th>%</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </section>
+
+    <!-- Modal novo resultado -->
+    <dialog id="dlgNew" class="backdrop:bg-black/70 rounded-xl p-0 w-[92%] max-w-lg">
+      <form id="formNew" class="glass p-6 rounded-xl">
+        <div class="text-lg font-semibold">Adicionar resultado</div>
+        <div class="mt-4 grid gap-3">
+          <label class="text-sm text-gray-300">Exame
+            <select id="newExam" class="w-full mt-1 p-3 rounded-md bg-black/40 border border-white/10"></select>
+          </label>
+          <div class="grid grid-cols-3 gap-3">
+            <label class="text-sm text-gray-300">Acertos
+              <input id="newCorrect" type="number" min="0" class="w-full mt-1 p-3 rounded-md bg-black/40 border border-white/10" />
+            </label>
+            <label class="text-sm text-gray-300">Total
+              <input id="newTotal" type="number" min="1" class="w-full mt-1 p-3 rounded-md bg-black/40 border border-white/10" />
+            </label>
+            <label class="text-sm text-gray-300">Tempo (min)
+              <input id="newTime" type="number" min="0" class="w-full mt-1 p-3 rounded-md bg-black/40 border border-white/10" />
+            </label>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end gap-3">
+          <button type="button" id="btnCancelNew" class="px-4 py-2 glass rounded-md">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-gradient-to-r from-green-700 to-green-500 rounded-md font-semibold">Salvar</button>
+        </div>
+      </form>
+    </dialog>
+
+  </main>
+
+  <footer class="px-6 md:px-12 py-10 border-t border-white/10 text-center text-sm text-gray-400">
+    © <span id="year"></span> Contest Guardian — Projeto Gear 5.
+  </footer>
+
+<script type="module">
+// ===== Config & Auth Helpers =====
+const API_URL = 'http://localhost:4000';
+let accessToken = null; // mantemos em memória
+let refreshToken = localStorage.getItem('cg_refresh');
+const userLocal = JSON.parse(localStorage.getItem('cg_user') || 'null');
+
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+function setWelcome(u){ $('#welcomeUser').textContent = u ? `Bem-vindo, ${u.fullName||u.username}!` : ''; }
+
+async function refresh(){
+  if(!refreshToken) throw new Error('Sem refresh token');
+  const r = await fetch(`${API_URL}/auth/refresh`,{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({refreshToken})});
+  if(!r.ok) throw new Error('Refresh falhou');
+  const data = await r.json();
+  accessToken = data.accessToken;
+  return accessToken;
+}
+
+async function authFetch(path, opts={}){
+  if(!accessToken) await refresh();
+  const r = await fetch(`${API_URL}${path}`, {
+    ...opts,
+    headers:{ 'Authorization': `Bearer ${accessToken}`, 'Content-Type':'application/json', ...(opts.headers||{}) }
+  });
+  if(r.status===401){ await refresh(); return authFetch(path, opts); }
+  return r;
+}
+
+// ===== API Calls =====
+async function apiMe(){ const r = await authFetch('/auth/me'); return r.json(); }
+async function apiGetExams(){ const r = await authFetch('/exams'); return r.json(); }
+async function apiGetResults(){ const r = await authFetch('/results/me'); return r.json(); }
+async function apiAddResult(payload){ const r = await authFetch('/results',{method:'POST', body:JSON.stringify(payload)}); return r.json(); }
+
+// ===== Render Helpers =====
+function fmtPct(n){ return `${Math.round(n)}%`; }
+function fmtHM(min){ const h=Math.floor(min/60), m=min%60; return `${h}h ${m}m`; }
+function pct(correct,total){ return total? (100*correct/total):0; }
+
+function renderKPIs({results}){
+  // Accuracy geral
+  const sum = results.reduce((a,r)=>({c:a.c+r.correct,t:a.t+r.total}),{c:0,t:0});
+  const acc = sum.t? (100*sum.c/sum.t):0;
+  $('#kpiAccuracy').textContent = fmtPct(acc);
+  $('#kpiAccuracyDiff').textContent = results.length>1 ? 'Comparativo gerado automaticamente' : '';
+
+  // Progresso (mock: % baseado em nº de resultados e acurácia)
+  const progress = Math.min(100, Math.round(acc*0.6 + results.length*4));
+  $('#kpiProgress').textContent = fmtPct(progress);
+  $('#kpiProgressBar').style.width = progress+'%';
+
+  // Tempo de estudo 7d (mock: soma timeMin dos últimos 7)
+  const now = Date.now();
+  const last7 = results.filter(r=> (now - new Date(r.createdAt).getTime()) < 7*24*60*60*1000);
+  const minutes = last7.reduce((a,r)=> a + (r.timeMin||0), 0);
+  $('#kpiTime').textContent = fmtHM(minutes);
+
+  // Streak (mock: conta dias consecutivos com resultado)
+  const days = new Set(results.map(r=> new Date(r.createdAt).toDateString()));
+  let streak=0; for(let i=0;i<30;i++){ const d=new Date(); d.setDate(d.getDate()-i); if(days.has(d.toDateString())) streak++; else break; }
+  $('#kpiStreak').textContent = streak || '--';
+}
+
+function renderSubjectsChart(results){
+  const buckets = { Mat:[], Port:[], Legis:[], RLM:[], Info:[] };
+  const pick = (title='')=>{
+    const t = title.toLowerCase();
+    if(t.includes('port')) return 'Port';
+    if(t.includes('rlm')||t.includes('lógica')) return 'RLM';
+    if(t.includes('legis')) return 'Legis';
+    if(t.includes('info')||t.includes('inform')) return 'Info';
+    return 'Mat';
+  };
+  results.forEach(r=>{ const key = pick(r.exam?.title); buckets[key].push( pct(r.correct,r.total) ); });
+  const container = $('#chartSubjects'); container.innerHTML='';
+  Object.values(buckets).forEach((arr)=>{
+    const avg = arr.length? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
+    const bar = document.createElement('div');
+    bar.style.height = Math.max(4, Math.round(avg))+'%';
+    bar.className = 'bg-green-500/80 rounded transition-all';
+    bar.title = arr.length? `${Math.round(avg)}%`:'—';
+    container.appendChild(bar);
+  });
+}
+
+function renderWeekChart(results){
+  // Distribui minutos por dia (0=Dom .. 6=Sab). Queremos Seg..Dom (1..0)
+  const mins = [0,0,0,0,0,0,0];
+  results.forEach(r=>{ if(r.timeMin){ const d=new Date(r.createdAt).getDay(); mins[d]+=r.timeMin; } });
+  const order = [1,2,3,4,5,6,0]; // Seg...Dom
+  const container = $('#chartWeek'); container.innerHTML='';
+  order.forEach(idx=>{
+    const val = mins[idx];
+    const h = Math.min(100, Math.round((val/120)*100)); // 120min = 100%
+    const bar = document.createElement('div');
+    bar.style.height = Math.max(6, h)+'%';
+    bar.className = 'bg-green-500/70 rounded transition-all';
+    bar.title = `${val||0} min`;
+    container.appendChild(bar);
+  });
+}
+
+function renderUpcoming(exams){
+  const list = $('#upcomingList'); list.innerHTML='';
+  const upcoming = exams.filter(e=> e.scheduledAt && new Date(e.scheduledAt) > new Date())
+                        .sort((a,b)=> new Date(a.scheduledAt)-new Date(b.scheduledAt))
+                        .slice(0,5);
+  if(!upcoming.length){ list.innerHTML = '<li class="text-gray-500">Sem simulados agendados.</li>'; return; }
+  upcoming.forEach(e=>{
+    const li = document.createElement('li');
+    li.className = 'flex justify-between items-center';
+    const dt = new Date(e.scheduledAt);
+    const time = dt.toLocaleString();
+    li.innerHTML = `<span>${e.title}</span><span class="chip">${time}</span>`;
+    list.appendChild(li);
+  });
+}
+
+function renderHistory(results){
+  const tb = $('#historyBody'); tb.innerHTML='';
+  results.sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
+  results.slice(0,20).forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.className = 'border-t border-white/5';
+    const dt = new Date(r.createdAt);
+    const p = pct(r.correct,r.total);
+    tr.innerHTML = `<td class="py-2">${dt.toLocaleDateString()}</td>
+      <td>${r.exam?.title||'-'}</td>
+      <td>${r.correct}/${r.total}</td>
+      <td>${r.timeMin||0}m</td>
+      <td>${Math.round(p)}%</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+// ===== Modal novo resultado =====
+function openNew(){ document.getElementById('dlgNew').showModal(); }
+function closeNew(){ document.getElementById('dlgNew').close(); }
+
+// ===== Boot =====
+$('#year').textContent = new Date().getFullYear();
+setWelcome(userLocal||{});
+
+$('#logoutBtn').addEventListener('click', async()=>{
+  try{ await fetch(`${API_URL}/auth/logout`,{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ refreshToken })}); }catch{}
+  localStorage.removeItem('cg_refresh');
+  localStorage.removeItem('cg_user');
+  window.location.href = 'index.html';
+});
+
+$('#btnOpenNew').addEventListener('click', openNew);
+$('#btnCancelNew').addEventListener('click', closeNew);
+
+// Carregar exames no select do modal
+async function loadExamsToSelect(){
+  const exams = await apiGetExams();
+  const sel = $('#newExam'); sel.innerHTML='';
+  exams.forEach(e=>{
+    const o = document.createElement('option');
+    o.value = e.id; o.textContent = e.title;
+    sel.appendChild(o);
+  });
+}
+
+$('#formNew').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const examId = $('#newExam').value;
+  const correct = Number($('#newCorrect').value||0);
+  const total = Number($('#newTotal').value||0);
+  const timeMin = Number($('#newTime').value||0);
+  if(!examId || !total) return alert('Selecione o exame e informe o total.');
+  try{
+    await apiAddResult({ examId, correct, total, timeMin });
+    closeNew();
+    await bootLoad();
+  }catch(err){
+    alert('Erro ao salvar');
+  }
+});
+
+async function bootLoad(){
+  try{
+    const [me, exams, results] = await Promise.all([apiMe(), apiGetExams(), apiGetResults()]);
+    setWelcome(me);
+    renderKPIs({results});
+    renderSubjectsChart(results);
+    renderWeekChart(results);
+    renderUpcoming(exams);
+    renderHistory(results);
+    await loadExamsToSelect();
+  }catch(err){
+    console.error(err);
+    if(!refreshToken){
+      alert('Faça login para acessar o painel.');
+      window.location.href = 'index.html';
+    }
+  }
+}
+
+await bootLoad();
+// Atualização automática a cada 30s
+setInterval(bootLoad, 30000);
+</script>
+</body>
+</html>
+

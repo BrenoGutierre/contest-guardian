@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="shortcut icon" href="contest guardian.ico" type="image/x-icon">
+  <title>Contest Guardian - Guardião dos concursos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --accent:#a3ffba;
+      --primary:#0b2b1f;
+      --muted:#9aa6a1;
+      --gold:#c7a34a;
+      --glass: rgba(255,255,255,0.04);
+    }
+    body {
+      background:
+        /* Camuflagem digital */
+        repeating-linear-gradient(45deg, rgba(0,15,5,0.15) 0, rgba(0,15,5,0.15) 2px, transparent 2px, transparent 4px),
+        repeating-linear-gradient(-45deg, rgba(10,30,10,0.12) 0, rgba(10,30,10,0.12) 2px, transparent 2px, transparent 4px),
+        /* Gradientes estratégicos */
+        radial-gradient(800px 500px at 80% 10%, rgba(5,40,20,0.35), transparent),
+        radial-gradient(600px 400px at 10% 90%, rgba(0,60,30,0.25), transparent),
+        /* Base escura militar */
+        #050805;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #e6efe8;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+    }
+  
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+  
+    .accent { color: var(--accent); }
+    .chip {
+      background: rgba(163,255,186,0.08);
+      color: var(--accent);
+      padding: .3rem .8rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .85rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+  
+    /* Efeito HUD (heads-up display) */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+      pointer-events: none;
+      z-index: 0;
+    }
+  
+    html { scroll-behavior: smooth; }
+  </style>
+  
+</head>
+<body class="antialiased">
+
+  <!-- NAV -->
+  <header class="py-6 px-6 md:px-12 flex items-center justify-between sticky top-0 bg-black/40 backdrop-blur z-40 border-b border-white/5">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center glass">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" class="text-white"><path d="M12 2L15 8l6 .5-4.5 3 1.5 6L12 15l-6 3 1.5-6L3 8.5 9 8l3-6z" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div class="uppercase text-xs tracking-widest text-gray-400">Contest Guardian</div>
+        <div class="text-sm text-gray-300 -mt-1">Guardião dos Concursos</div>
+      </div>
+    </div>
+    <nav class="hidden md:flex gap-6 items-center">
+      <a href="#sobre" class="hover:underline text-sm">Sobre</a>
+      <a href="#tecnologias" class="hover:underline text-sm">Tecnologias</a>
+      <a href="#funcoes" class="hover:underline text-sm">Funcionalidades</a>
+      <a href="creator_site.html" class="hover:underline text-sm">Criador</a>
+      <a href="#login" class="ml-2 rounded-md px-4 py-2 chip">Login</a>
+      <a href="register.html" class="px-8 py-3 rounded-md glass border border-white/6 transition hover:scale-[1.02]">Cadastrar</a>
+    </nav>
+    <button id="openMenu" class="md:hidden chip">Menu</button>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileMenu" class="hidden md:hidden fixed inset-0 bg-black/80 backdrop-blur-sm p-6 z-50">
+    <div class="max-w-sm mx-auto glass rounded-2xl p-6">
+      <div class="flex justify-between items-center">
+        <div class="font-semibold">Navegação</div>
+        <button id="closeMenu" class="text-gray-400">Fechar</button>
+      </div>
+      <div class="mt-4 flex flex-col gap-4 text-sm">
+        <a href="#sobre" class="hover:underline" onclick="toggleMenu(false)">Sobre</a>
+        <a href="#tecnologias" class="hover:underline" onclick="toggleMenu(false)">Tecnologias</a>
+        <a href="#funcoes" class="hover:underline" onclick="toggleMenu(false)">Funcionalidades</a>
+        <a href="creator_site.html" class="hover:underline" onclick="toggleMenu(false)">Criador</a>
+        <a href="#login" class="chip inline-flex w-fit" onclick="toggleMenu(false)">Login</a>
+        <a href="register.html" class="px-8 py-3 rounded-md glass border border-white/6 transition hover:scale-[1.02]">Cadastrar</a>
+     </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="px-6 md:px-12 py-20 text-center bg-black/20">
+    <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+      Contest Guardian - <span class="accent">Sua Missão Começa Aqui</span>
+    </h1>
+    <p class="mt-6 text-lg text-gray-300 max-w-2xl mx-auto">
+      Forje disciplina, treine com inteligência e conquiste o futuro com a IA que entende seu ritmo.  
+      A guerra é no campo das provas e nós somos seu arsenal de conhecimento.
+    </p>
+
+    <div class="mt-8 flex justify-center gap-4">
+      <a href="#login" class="px-8 py-3 rounded-md bg-gradient-to-r from-green-700 to-green-500 font-semibold transition hover:scale-[1.02]">Entrar</a>
+      <a href="#sobre" class="px-8 py-3 rounded-md glass border border-white/6 transition hover:scale-[1.02]">Saiba Mais</a>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre" class="px-6 md:px-12 py-16">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold">Sobre o Projeto</h2>
+      <p class="mt-4 text-gray-300 leading-relaxed">
+        O <strong>Contest Guardian</strong> é a plataforma criada para quem enxerga o estudo como um campo de batalha.
+        Cada simulado, relatório e mensagem motivacional são parte do treinamento.  
+        Com inteligência artificial, o sistema adapta o plano de estudos ao seu ritmo e ao seu objetivo.
+      </p>
+    </div>
+  </section>
+
+  <!-- TECNOLOGIAS -->
+  <section id="tecnologias" class="px-6 md:px-12 py-10 bg-black/30">
+    <div class="max-w-5xl mx-auto text-center">
+      <h3 class="text-2xl font-bold mb-6">Tecnologias Utilizadas</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass p-4 rounded-lg">Spring / .NET</div>
+        <div class="glass p-4 rounded-lg">React + Tailwind</div>
+        <div class="glass p-4 rounded-lg">TensorFlow / PyTorch</div>
+        <div class="glass p-4 rounded-lg">PostgreSQL</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGIN -->
+  <section id="login" class="px-6 md:px-12 py-16 bg-black/30">
+    <div class="max-w-md mx-auto glass p-8 rounded-2xl">
+      <h3 class="text-2xl font-bold text-center mb-4">Área de Login</h3>
+      <form id="loginForm" class="flex flex-col gap-4">
+        <input id="username" type="text" placeholder="Usuário" class="p-3 rounded-md bg-black/40 border border-white/10" required>
+        <input id="password" type="password" placeholder="Senha" class="p-3 rounded-md bg-black/40 border border-white/10" required>
+        <label class="flex items-center gap-2 text-sm text-gray-400"><input id="remember" type="checkbox" class="accent-green-500"> Manter conectado</label>
+        <button type="submit" id="btnLogin" class="mt-2 bg-gradient-to-r from-green-700 to-green-500 py-3 rounded-md font-semibold transition hover:scale-[1.02]">Entrar</button>
+      </form>
+      <p class="mt-4 text-center text-sm text-gray-400">
+        Esqueceu a senha? <a href="recover.html" class="text-green-400 underline">Recupere aqui</a>.
+      </p>
+    </div>
+  </section>
+
+  <footer class="px-6 md:px-12 py-10 border-t border-white/10 text-center text-sm text-gray-400">
+    <div class="max-w-5xl mx-auto">
+      <div class="mb-2">“A disciplina vence o talento quando o talento não tem disciplina.”</div>
+      © <span id="year"></span> Contest Guardian - Guardião dos concursos. Todos os direitos reservados.
+    </div>
+  </footer>
+
+<script type="module">
+const API_URL = 'http://localhost:4000';
+const byId = (id) => document.getElementById(id);
+
+byId('year').innerText = new Date().getFullYear();
+const mobileMenu = byId('mobileMenu');
+function toggleMenu(force){ const show = typeof force==='boolean'? force: mobileMenu.classList.contains('hidden'); mobileMenu.classList.toggle('hidden', !show); }
+byId('openMenu').addEventListener('click',()=>toggleMenu(true));
+byId('closeMenu').addEventListener('click',()=>toggleMenu(false));
+
+async function login(username,password){
+  const res = await fetch(`${API_URL}/auth/login`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({username,password})
+  });
+  if(!res.ok) throw new Error('Credenciais inválidas');
+  const data = await res.json();
+  localStorage.setItem('cg_refresh',data.refreshToken);
+  localStorage.setItem('cg_user',JSON.stringify(data.user));
+  window.location.href='dashboard.html';
+}
+
+const loginForm = byId('loginForm');
+const btnLogin = byId('btnLogin');
+
+loginForm.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  btnLogin.disabled=true; btnLogin.textContent='Entrando...';
+  const u = byId('username').value.trim();
+  const p = byId('password').value.trim();
+  try{
+    await login(u,p);
+  }catch(err){
+    alert('Falha no login: '+err.message);
+  }finally{
+    btnLogin.disabled=false; btnLogin.textContent='Entrar';
+  }
+});
+
+// Auto refresh se já houver token
+async function refresh(){
+  const refreshToken = localStorage.getItem('cg_refresh');
+  if(!refreshToken) return;
+  const res = await fetch(`${API_URL}/auth/refresh`,{
+    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({refreshToken})
+  });
+  if(res.ok){ const data=await res.json(); if(data.accessToken){ window.location.href='dashboard.html'; } }
+}
+refresh();
+</script>
+</body>
+</html>
+

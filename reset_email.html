@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Contest Guardian - Redefinir E-mail</title>
+  <style>
+    body {
+      background-color: #030504;
+      color: #e6efe8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0, 255, 130, 0.1);
+    }
+    h1 {
+      color: #a3ffba;
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #cfd8d3;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #0b6d3d, #14b870);
+      color: white;
+      padding: 12px 28px;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.2s ease-in-out;
+    }
+    .btn:hover {
+      filter: brightness(1.1);
+      transform: scale(1.03);
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #9aa6a1;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 1rem;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .logo svg {
+      width: 48px;
+      height: 48px;
+      color: #a3ffba;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2L15 8l6 .5-4.5 3 1.5 6L12 15l-6 3 1.5-6L3 8.5 9 8l3-6z"/>
+      </svg>
+      <h1>Contest Guardian</h1>
+    </div>
+
+    <p>Olá, guerreiro!</p>
+    <p>
+      Recebemos um pedido para redefinir o seu email de acesso ao <strong>Contest Guardian - Guardião dos concursos</strong>.
+      Se foi você, clique no botão abaixo para criar um novo email.
+    </p>
+
+    <div style="text-align:center;">
+      <a href="{{reset_link}}" class="btn">Redefinir Email</a>
+    </div>
+
+    <p>
+      Se você não fez essa solicitação, pode ignorar este e-mail.  
+      Seu código expira em <strong>15 minutos</strong>.
+    </p>
+
+    <p style="margin-top:2rem; font-style:italic; text-align:center;">
+      “A disciplina vence o talento quando o talento não tem disciplina.” ⚔️
+    </p>
+
+    <div class="footer">
+      © {{year}} Contest Guardian - Guardião dos concursos.<br>
+      Desenvolvido por <strong>Breno Gutierre</strong>.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="shortcut icon" href="contest guardian.ico" type="image/x-icon">
+  <title>Sobre o Criador — Contest Guardian: Guardião dos concursos.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --gold:#d4af37;
+      --dark:#0a0a0a;
+      --light:#f5f5f5;
+    }
+    body{
+      background: radial-gradient(circle at top, rgba(212,175,55,0.05), transparent 70%),
+                  linear-gradient(180deg, #0a0a0a 40%, #111 100%);
+      color: var(--light);
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+    }
+    .glow-text{ text-shadow: 0 0 15px rgba(212,175,55,0.4); }
+    .fade-in{ animation: fadeIn 1.5s ease-out; }
+    @keyframes fadeIn {
+      from{opacity:0;transform:translateY(20px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    .typing{
+      border-right: 2px solid var(--gold);
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 6s steps(50, end), blink .75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+    .btn-gold{
+      background: var(--gold);
+      color: #000;
+      font-weight: 600;
+      border-radius: 9999px;
+      transition: all .3s ease;
+      box-shadow: 0 0 15px rgba(212,175,55,0.3);
+    }
+    .btn-gold:hover{
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(212,175,55,0.6);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- HEADER -->
+  <header class="text-center py-16 fade-in">
+    <h1 class="text-4xl md:text-5xl font-bold glow-text text-[var(--gold)]">O Criador ou mais conhecido como Creator Guardian</h1>
+    <p class="text-gray-400 mt-2 text-lg italic">A mente por trás do Contest Guardian - Guardião dos concursos.</p>
+  </header>
+
+  <!-- SEÇÃO SOBRE -->
+  <section class="max-w-4xl mx-auto px-6 md:px-12 text-center md:text-left mb-24 fade-in">
+    <div class="flex flex-col md:flex-row items-center gap-10">
+      <img src="Guardião-Supremo.jpg" alt="Breno Gutierre" class="w-40 h-40 rounded-full border-4 border-[var(--gold)] shadow-lg">
+      <div>
+        <h2 class="text-2xl font-semibold text-[var(--gold)] mb-3">Breno Gutierre</h2>
+        <p id="bio" class="text-gray-300 leading-relaxed typing">
+          Estudante de TI, sonhador, aluno ipmil e criador do projeto Contest Guardian - Guardião dos concursos.  
+          Gutierre não apenas desenvolve sistemas, ele cria propósitos.  
+          Sua jornada começou com uma ideia simples: transformar o estudo e a disciplina em algo épico - como um treino de heróis.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO HISTÓRIA -->
+  <section class="max-w-5xl mx-auto px-6 md:px-12 mb-24 fade-in">
+    <h2 class="text-3xl font-semibold text-center text-[var(--gold)] mb-8">A Ideia Por Trás do Contest Guardian.</h2>
+    <p class="text-gray-300 text-lg leading-relaxed text-justify">
+      O <strong>Contest Guardian</strong> nasceu da vontade de transformar o processo de preparação em algo maior do que estudar.  
+      Para Gutierre, cada simulado é uma batalha, cada erro é um aprendizado e cada conquista é uma vitória digna de um Guardião.  
+      Inspirado por animes, pela fé e pela disciplina dos que lutam pelos seus sonhos, ele criou um sistema que vai além da tecnologia -  
+      um movimento que une corpo, mente e espírito em busca da evolução total.
+    </p>
+  </section>
+
+  <!-- SEÇÃO VISÃO -->
+  <section class="max-w-5xl mx-auto px-6 md:px-12 mb-24 fade-in">
+    <h2 class="text-3xl font-semibold text-center text-[var(--gold)] mb-8">A Missão</h2>
+    <p class="text-gray-300 text-lg leading-relaxed text-justify">
+      O Contest Guardian não é só um projeto, é uma filosofia.  
+      Representa a luta de todos que se recusam a desistir, mesmo quando o mundo diz o contrário.  
+      É a união da fé, do foco e da força - os três pilares do verdadeiro Guardião.  
+      Gutierre acredita que, assim como nos animes, cada pessoa tem o poder de despertar seu próprio “modo Guardião” -
+      o estado onde corpo, alma e propósito se alinham para alcançar o impossível.
+    </p>
+  </section>
+
+  <!-- SEÇÃO FINAL -->
+  <section class="text-center mb-16 fade-in">
+    <p class="text-gray-400 italic text-lg">"Mentes pequenas não acreditam em grandes caminhos que levam a sonhos ainda maiores."</p>
+    <p class="text-[var(--gold)] mt-4 font-semibold">- Breno Gutierre</p>
+  </section>
+
+  <!-- BOTÃO VOLTAR -->
+  <div class="text-center mb-24 fade-in">
+    <a href="index.html" class="btn-gold py-3 px-8 text-lg">← Voltar ao Início</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-black bg-opacity-70 py-6 text-center border-t border-[var(--gold)]">
+    <p class="text-gray-500 text-sm">© 2025 Contest Guardian - Guardião dos concursos. Criado por <span class="text-[var(--gold)]">Breno Gutierre - Tenente Ipmil, Sub-Comandante de Pelotão e 3 vezes guerreiro de selva.</span>.</p>
+  </footer>
+</body>
+</html>

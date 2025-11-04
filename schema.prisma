@@ -1,0 +1,77 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id         String   @id @default(uuid())
+  username   String   @unique
+  email      String?  @unique
+  password   String
+  fullName   String?
+  role       String   @default("student")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  results    Result[]
+  exams      Exam[]   @relation("CreatedExams")
+  refreshes  RefreshToken[]
+  resets     PasswordResetToken[]
+}
+
+model Exam {
+  id              String   @id @default(uuid())
+  title           String
+  scheduledAt     DateTime?
+  durationMinutes Int?
+  createdById     String?
+  createdBy       User?    @relation("CreatedExams", fields: [createdById], references: [id])
+
+  results         Result[]
+  createdAt       DateTime @default(now())
+}
+
+model Result {
+  id        String   @id @default(uuid())
+  userId    String
+  examId    String
+  correct   Int
+  total     Int
+  timeMin   Int      @default(0)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  exam      Exam     @relation(fields: [examId], references: [id])
+
+  @@index([userId])
+  @@index([examId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+  @@index([token])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
